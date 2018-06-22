@@ -9,11 +9,15 @@ import UIKit
 class ToDoViewController: UITableViewController {
     
     var itemArray = ["Find Mike", "Buy eggs", "eat egg", "cook egg first"]
+    
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
     }
     
     //MARK - Tableview Datasource Methods
@@ -50,6 +54,8 @@ class ToDoViewController: UITableViewController {
             //what will happen when user clicks the Add item button on UIAlert
             if textField.text != nil {
                 self.itemArray.append(textField.text!)
+                self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+                
                 self.tableView.reloadData()
             }
         }
